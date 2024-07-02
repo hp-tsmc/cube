@@ -9,4 +9,4 @@ docker run --rm -p 3000:3000 -p 4000:4000 \
 -e CUBEJS_API_SECRET=test \
 -e CUBEJS_DEV_MODE=true \
 -v $(pwd):/cube/conf \
-docker.io/library/cubejs:metrics
+docker.io/library/cubejs:release
