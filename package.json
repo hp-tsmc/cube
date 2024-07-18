@@ -33,7 +33,7 @@
     "lerna": "^4.0.0",
     "loader-utils": "^2.0.3",
     "lodash": "^4.17.21",
-    "parse-url": "^6.0.1"
+    "parse-url": "^8.1.0"
   },
   "files": [
     "src",
@@ -65,7 +65,7 @@
     "typescript": "~5.2.2",
     "loader-utils": "^2.0.3",
     "lodash": "^4.17.21",
-    "parse-url": "^6.0.1"
+    "parse-url": "^8.1.0"
   },
   "repository": {
     "type": "git",

@@ -4,9 +4,10 @@
     "src",
     "test"
   ],
-  "compilerOptions": {
+    "compilerOptions": {
     "outDir": "dist",
     "rootDir": ".",
     "baseUrl": ".",
+    "strict": false
   }
 }
