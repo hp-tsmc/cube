@@ -59,7 +59,10 @@
     "rimraf": "^3.0.2",
     "rollup": "2.53.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "loader-utils": "^2.0.3",
+    "lodash": "^4.17.21",
+    "parse-url": "^6.0.1"
   },
   "repository": {
     "type": "git",
