@@ -20,8 +20,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
     sh -s -- --profile minimal --default-toolchain nightly-2022-03-08 -y
 
 ENV CUBESTORE_SKIP_POST_INSTALL=true
-ENV TERM rxvt-unicode
-ENV NODE_ENV development
+ENV TERM=rxvt-unicode
+ENV NODE_ENV=development
 
 WORKDIR /cubejs
 
@@ -53,7 +53,7 @@ COPY packages/cubejs-druid-driver/package.json packages/cubejs-druid-driver/pack
 COPY packages/cubejs-duckdb-driver/package.json packages/cubejs-duckdb-driver/package.json
 COPY packages/cubejs-elasticsearch-driver/package.json packages/cubejs-elasticsearch-driver/package.json
 COPY packages/cubejs-firebolt-driver/package.json packages/cubejs-firebolt-driver/package.json
-COPY packages/cubejs-hive-driver/package.json packages/cubejs-hive-driver/package.json
+# COPY packages/cubejs-hive-driver/package.json packages/cubejs-hive-driver/package.json
 COPY packages/cubejs-mongobi-driver/package.json packages/cubejs-mongobi-driver/package.json
 COPY packages/cubejs-mssql-driver/package.json packages/cubejs-mssql-driver/package.json
 COPY packages/cubejs-mysql-driver/package.json packages/cubejs-mysql-driver/package.json
@@ -73,7 +73,7 @@ COPY packages/cubejs-server-core/package.json packages/cubejs-server-core/packag
 COPY packages/cubejs-sqlite-driver/package.json packages/cubejs-sqlite-driver/package.json
 COPY packages/cubejs-ksql-driver/package.json packages/cubejs-ksql-driver/package.json
 COPY packages/cubejs-dbt-schema-extension/package.json packages/cubejs-dbt-schema-extension/package.json
-COPY packages/cubejs-jdbc-driver/package.json packages/cubejs-jdbc-driver/package.json
+# COPY packages/cubejs-jdbc-driver/package.json packages/cubejs-jdbc-driver/package.json
 # Skip
 # COPY packages/cubejs-testing/package.json packages/cubejs-testing/package.json
 # COPY packages/cubejs-docker/package.json packages/cubejs-docker/package.json
@@ -83,9 +83,9 @@ COPY packages/cubejs-client-core/package.json packages/cubejs-client-core/packag
 COPY packages/cubejs-client-react/package.json packages/cubejs-client-react/package.json
 COPY packages/cubejs-client-vue/package.json packages/cubejs-client-vue/package.json
 COPY packages/cubejs-client-vue3/package.json packages/cubejs-client-vue3/package.json
-COPY packages/cubejs-client-ngx/package.json packages/cubejs-client-ngx/package.json
+# COPY packages/cubejs-client-ngx/package.json packages/cubejs-client-ngx/package.json
 COPY packages/cubejs-client-ws-transport/package.json packages/cubejs-client-ws-transport/package.json
-COPY packages/cubejs-playground/package.json packages/cubejs-playground/package.json
+# COPY packages/cubejs-playground/package.json packages/cubejs-playground/package.json
 
 RUN yarn policies set-version v1.22.19
 # Yarn v1 uses aggressive timeouts with summing time spending on fs, https://github.com/yarnpkg/yarn/issues/4890
@@ -93,19 +93,19 @@ RUN yarn config set network-timeout 120000 -g
 
 # There is a problem with release process.
 # We are doing version bump without updating lock files for the docker package.
-#RUN yarn install --frozen-lockfile
+# RUN yarn install --frozen-lockfile
 
-# FROM base as prod_base_dependencies
+FROM base AS prod_base_dependencies
 # COPY packages/cubejs-databricks-jdbc-driver/package.json packages/cubejs-databricks-jdbc-driver/package.json
 # RUN mkdir packages/cubejs-databricks-jdbc-driver/bin
 # RUN echo '#!/usr/bin/env node' > packages/cubejs-databricks-jdbc-driver/bin/post-install
-# RUN yarn install --prod
+RUN yarn install --prod
 
-# FROM prod_base_dependencies as prod_dependencies
+FROM prod_base_dependencies AS prod_dependencies
 # COPY packages/cubejs-databricks-jdbc-driver/bin packages/cubejs-databricks-jdbc-driver/bin
-# RUN yarn install --prod --ignore-scripts
+RUN yarn install --prod --ignore-scripts
 
-FROM base as build
+FROM base AS build
 
 RUN yarn install
 
@@ -128,7 +128,7 @@ COPY packages/cubejs-druid-driver/ packages/cubejs-druid-driver/
 COPY packages/cubejs-duckdb-driver/ packages/cubejs-duckdb-driver/
 COPY packages/cubejs-elasticsearch-driver/ packages/cubejs-elasticsearch-driver/
 COPY packages/cubejs-firebolt-driver/ packages/cubejs-firebolt-driver/
-COPY packages/cubejs-hive-driver/ packages/cubejs-hive-driver/
+# COPY packages/cubejs-hive-driver/ packages/cubejs-hive-driver/
 COPY packages/cubejs-mongobi-driver/ packages/cubejs-mongobi-driver/
 COPY packages/cubejs-mssql-driver/ packages/cubejs-mssql-driver/
 COPY packages/cubejs-mysql-driver/ packages/cubejs-mysql-driver/
@@ -148,7 +148,7 @@ COPY packages/cubejs-server-core/ packages/cubejs-server-core/
 COPY packages/cubejs-sqlite-driver/ packages/cubejs-sqlite-driver/
 COPY packages/cubejs-ksql-driver/ packages/cubejs-ksql-driver/
 COPY packages/cubejs-dbt-schema-extension/ packages/cubejs-dbt-schema-extension/
-COPY packages/cubejs-jdbc-driver/ packages/cubejs-jdbc-driver/
+# COPY packages/cubejs-jdbc-driver/ packages/cubejs-jdbc-driver/
 # COPY packages/cubejs-databricks-jdbc-driver/ packages/cubejs-databricks-jdbc-driver/
 # Skip
 # COPY packages/cubejs-testing/ packages/cubejs-testing/
@@ -159,12 +159,14 @@ COPY packages/cubejs-client-core/ packages/cubejs-client-core/
 COPY packages/cubejs-client-react/ packages/cubejs-client-react/
 COPY packages/cubejs-client-vue/ packages/cubejs-client-vue/
 COPY packages/cubejs-client-vue3/ packages/cubejs-client-vue3/
-COPY packages/cubejs-client-ngx/ packages/cubejs-client-ngx/
+# COPY packages/cubejs-client-ngx/ packages/cubejs-client-ngx/
 COPY packages/cubejs-client-ws-transport/ packages/cubejs-client-ws-transport/
-COPY packages/cubejs-playground/ packages/cubejs-playground/
+# COPY packages/cubejs-playground/ packages/cubejs-playground/
 
 RUN yarn build
 RUN yarn lerna run build
+
+RUN yarn remove lerna -W
 
 RUN find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
 
@@ -182,24 +184,27 @@ RUN apt-get update \
 
 RUN yarn policies set-version v1.22.19
 
-ENV TERM rxvt-unicode
-ENV NODE_ENV production
+ENV TERM=rxvt-unicode
+ENV NODE_ENV=production
 
 WORKDIR /cube
 
 COPY --from=build /cubejs .
-# COPY --from=prod_dependencies /cubejs .
+COPY --from=prod_dependencies /cubejs .
 
 
 
 # By default Node dont search in parent directory from /cube/conf, @todo Reaserch a little bit more
-ENV NODE_PATH /cube/conf/node_modules:/cube/node_modules
+ENV NODE_PATH=/cube/conf/node_modules:/cube/node_modules
 ENV PYTHONUNBUFFERED=1
 
 
 # We need to test this build path & bin path first
 COPY packages/cubejs-docker/bin-relesae/cubejs /usr/local/bin/cubejs
 RUN ln -s  /cubejs/rust/cubestore/bin/cubestore-dev /usr/local/bin/cubestore-dev
+
+# install extension 
+ADD packages/cubejs-docker/duckdb_extension/httpfs.duckdb_extension /root/.duckdb/extensions/v1.0.0/linux_amd64/httpfs.duckdb_extension
 
 WORKDIR /cube/conf
 

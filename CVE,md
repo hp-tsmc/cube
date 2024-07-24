@@ -1,0 +1,28 @@
+# CVEs
+
+mysql2
+tough-cookie@~2.5.0
+
+parse-url 6.0.5
+
+lodash 3.10.1
+
+
+# How we fix CVE?
+
+- Modify resolution in packages.json to upgrade denpendencies
+- yarn remove lerna after yarn lerna build
+- drop unused drivers and frontend integration
+-> see release.Dockerfile commented lines
+Following were removed when building CubeJS:
+```sh
+# Frontend
+cubejs-client-ngx
+cubejs-playground
+
+# Driver
+cubejs-databricks-jdbc-driver
+cubejs-snowflake-driver
+cubejs-jdbc-driver
+ubejs-hive-driver
+```

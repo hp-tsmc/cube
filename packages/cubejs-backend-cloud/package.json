@@ -40,6 +40,13 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5"
   },
+  "resolutions": {
+    "tough-cookie": "4.1.3",
+    "loader-utils": "^2.0.3",
+    "lodash": "^4.17.21",
+    "parse-url": "^8.1.0",
+    "source-map-support": "^0.5.19"
+  },
   "publishConfig": {
     "access": "public"
   },
