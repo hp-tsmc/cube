@@ -1,0 +1,74 @@
+services:
+  cube_api:
+    restart: always
+    image: docker.io/hpdevelop/cubejs:2024-07-24_20-46-57
+    ports:
+      - 4000:4000
+      - 5432:5432
+    env_file: .env
+    environment:
+      CUBEJS_PG_SQL_PORT: "5432"
+      CUBEJS_SQL_USER: user
+      CUBEJS_SQL_PASSWORD: password
+      CUBEJS_API_SECRET: secret
+      CUBEJS_DB_EXPORT_BUCKET: cubestore
+      CUBEJS_CUBESTORE_HOST: cubestore_router
+      DEBUG_LOG: true
+    volumes:
+      - .:/cube/conf
+    depends_on:
+      - cube_refresh_worker
+      - cubestore_router
+      - cubestore_worker_1
+      - cubestore_worker_2
+ 
+  cube_refresh_worker:
+    restart: always
+    image: docker.io/hpdevelop/cubejs:2024-07-24_20-46-57
+    env_file: .env
+    environment:
+      - CUBEJS_DB_EXPORT_BUCKET=cubestore
+      - CUBEJS_CUBESTORE_HOST=cubestore_router
+      - CUBEJS_API_SECRET=secret
+      - CUBEJS_REFRESH_WORKER=true
+    volumes:
+      - .:/cube/conf
+ 
+  cubestore_router:
+    restart: always
+    image: cubejs/cubestore:latest
+    environment:
+      - CUBESTORE_WORKERS=cubestore_worker_1:10001,cubestore_worker_2:10002
+      - CUBESTORE_REMOTE_DIR=/cube/data
+      - CUBESTORE_META_PORT=9999
+      - CUBESTORE_SERVER_NAME=cubestore_router:9999
+    volumes:
+      - .cubestore:/cube/data
+ 
+  cubestore_worker_1:
+    restart: always
+    image: cubejs/cubestore:latest
+    environment:
+      - CUBESTORE_WORKERS=cubestore_worker_1:10001,cubestore_worker_2:10002
+      - CUBESTORE_SERVER_NAME=cubestore_worker_1:10001
+      - CUBESTORE_WORKER_PORT=10001
+      - CUBESTORE_REMOTE_DIR=/cube/data
+      - CUBESTORE_META_ADDR=cubestore_router:9999
+    volumes:
+      - .cubestore:/cube/data
+    depends_on:
+      - cubestore_router
+ 
+  cubestore_worker_2:
+    restart: always
+    image: cubejs/cubestore:latest
+    environment:
+      - CUBESTORE_WORKERS=cubestore_worker_1:10001,cubestore_worker_2:10002
+      - CUBESTORE_SERVER_NAME=cubestore_worker_2:10002
+      - CUBESTORE_WORKER_PORT=10002
+      - CUBESTORE_REMOTE_DIR=/cube/data
+      - CUBESTORE_META_ADDR=cubestore_router:9999
+    volumes:
+      - .cubestore:/cube/data
+    depends_on:
+      - cubestore_router

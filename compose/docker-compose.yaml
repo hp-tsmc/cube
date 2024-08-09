@@ -15,13 +15,18 @@ services:
       - db_data:/var/lib/mysql
       - ./initdb:/docker-entrypoint-initdb.d
   cube:
-    image: docker.io/hpdevelop/cubejs:2024-07-19_01-24-57 #docker.io/hpdevelop/cubejs:2024-07-18_20-50-12
+    image: docker.io/hpdevelop/cubejs:2024-07-24_20-46-57
     ports:
       # It's better to use random port binding for 4000/3000 ports
       # without it you will not able to start multiple projects inside docker
       - 4001:4000  # Cube.js API and Developer Playground
       - 3001:3000  # Dashboard app, if created
+      - 5432:5432
     env_file: .env
+    environment:
+      CUBEJS_PG_SQL_PORT: "5432"
+      CUBEJS_SQL_USER: user
+      CUBEJS_SQL_PASSWORD: password
     volumes:
       # If you are going to use own dependencies, for example axios/vault or anything else for getting configuration
       - ./cube:/cube/conf
