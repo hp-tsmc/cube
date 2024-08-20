@@ -15,7 +15,7 @@ services:
       - db_data:/var/lib/mysql
       - ./initdb:/docker-entrypoint-initdb.d
   cube:
-    image: docker.io/hpdevelop/cubejs:2024-08-20_10-46-56
+    image: docker.io/hpdevelop/cubejs:dev
     ports:
       # It's better to use random port binding for 4000/3000 ports
       # without it you will not able to start multiple projects inside docker

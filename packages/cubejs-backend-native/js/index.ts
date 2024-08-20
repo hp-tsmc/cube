@@ -340,6 +340,11 @@ export const execSql = async (instance: SqlInterfaceInstance, sqlQuery: string, 
   await native.execSql(instance, sqlQuery, stream, securityContext ? JSON.stringify(securityContext) : null);
 };
 
+export const getMetrics = (): string => {
+  const native = loadNative();
+  return native.getMetrics();
+};
+
 export interface PyConfiguration {
   repositoryFactory?: (ctx: unknown) => Promise<unknown>,
   logger?: (msg: string, params: Record<string, any>) => void,

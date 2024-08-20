@@ -21,9 +21,12 @@ import { WebSocketServer, WebSocketServerOptions } from './websocket-server';
 import { gracefulHttp, GracefulHttpServer } from './server/gracefull-http';
 import { gracefulMiddleware } from './graceful-middleware';
 import { ServerStatusHandler } from './server-status';
+// metrics for Cube API
+import { getMetrics } from '@cubejs-backend/native';
+import { Registry, collectDefaultMetrics } from 'prom-client';
 
 const { version } = require('../../package.json');
-const promBundle = require('express-prom-bundle');
+
 
 dotenv.config({
   multiline: 'line-breaks',
@@ -89,7 +92,29 @@ export class CubejsServer {
       }
 
       const app = express();
+      // Create a new registry for Prometheus metrics
+      const registry = new Registry();
+      
+      // Add default metrics to the registry
+      collectDefaultMetrics({ register: registry });
+      // Create a custom middleware to combine express-prom-bundle and Cube.js native metrics
+      const combinedMetricsMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        if (req.path === '/metrics') {
+          const nativeMetrics = getMetrics();
+          
+          // Combine express-prom-bundle metrics with Cube.js native metrics
+          registry.getMetricsAsJSON().then((bundleMetrics) => {
+            const combinedMetrics = bundleMetrics.map(m => m.help ? `# HELP ${m.name} ${m.help}\n# TYPE ${m.name} ${m.type}\n${m.values.map(v => `${m.name}${v.labels ? `{${Object.entries(v.labels).map(([k, v]) => `${k}="${v}"`).join(',')}}` : ''} ${v.value}`).join('\n')}` : '').join('\n');
+            
+            res.set('Content-Type', 'text/plain');
+            res.send(`${combinedMetrics}\n${nativeMetrics}`);
+          });
+        } else {
+          next();
+        }
+      };
       // Add Prometheus metrics middleware
+      const promBundle = require('express-prom-bundle');
       const metricsMiddleware = promBundle({ 
         includeMethod: true ,
         includePath: true,

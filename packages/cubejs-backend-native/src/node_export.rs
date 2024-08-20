@@ -24,6 +24,22 @@ use crate::utils::batch_to_rows;
 use cubesql::{config::CubeServices, telemetry::ReportingLogger, CubeError};
 
 use neon::prelude::*;
+// import metrics// At the top of the file, with other imports
+use prometheus::{Histogram, HistogramOpts, Registry, TextEncoder, Encoder};
+use lazy_static::lazy_static;
+// define metrics
+lazy_static! {
+    static ref REGISTRY: Registry = Registry::new();
+    static ref SQL_QUERY_DURATION: Histogram = Histogram::with_opts(
+        HistogramOpts::new("cube_sql_query_duration_seconds", "Duration of SQL queries in seconds")
+            .buckets(vec![0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0])
+    ).unwrap();
+}
+
+// register metrics
+pub fn register_metrics() {
+    REGISTRY.register(Box::new(SQL_QUERY_DURATION.clone())).unwrap();
+}
 
 struct SQLInterface {
     services: Arc<CubeServices>,
@@ -216,7 +232,7 @@ async fn handle_sql_query(
     let session = session_manager
         .create_session(DatabaseProtocol::PostgreSQL, host, port)
         .await;
-
+    let query_start = std::time::Instant::now();
     session
         .state
         .set_auth_context(Some(native_auth_ctx.clone()));
@@ -229,6 +245,10 @@ async fn handle_sql_query(
     let query_plan = convert_sql_to_cube_query(sql_query, meta_context, session).await?;
 
     let mut stream = get_df_batches(&query_plan).await?;
+
+    let query_duration = query_start.elapsed().as_secs_f32();
+    SQL_QUERY_DURATION.observe(query_duration as f64);
+    println!("Recording query duration: {} seconds", query_duration);
 
     let semaphore = Arc::new(Semaphore::new(0));
 
@@ -465,6 +485,26 @@ fn debug_js_to_clrepr_to_js(mut cx: FunctionContext) -> JsResult<JsValue> {
     arg_clrep.into_js(&mut cx)
 }
 
+fn get_metrics(mut cx: FunctionContext) -> JsResult<JsString> {
+    let mut buffer = Vec::new();
+    let encoder = TextEncoder::new();
+    let metric_families = REGISTRY.gather();
+    
+    // Debug logging
+    println!("Number of metric families: {}", metric_families.len());
+    for family in &metric_families {
+        println!("Metric family name: {}", family.get_name());
+    }
+    
+    encoder.encode(&metric_families, &mut buffer).unwrap();
+    let metrics_output = String::from_utf8(buffer).unwrap();
+    
+    // Debug logging
+    println!("Metrics output: {}", metrics_output);
+    
+    Ok(cx.string(metrics_output))
+}
+
 pub fn register_module_exports(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("setupLogger", setup_logger)?;
     cx.export_function("registerInterface", register_interface)?;
@@ -472,6 +512,8 @@ pub fn register_module_exports(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("execSql", exec_sql)?;
     cx.export_function("isFallbackBuild", is_fallback_build)?;
     cx.export_function("__js_to_clrepr_to_js", debug_js_to_clrepr_to_js)?;
+    register_metrics();
+    cx.export_function("getMetrics", get_metrics)?;
 
     crate::template::template_register_module(&mut cx)?;
 

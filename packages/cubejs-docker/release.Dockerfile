@@ -204,6 +204,13 @@ COPY --from=build /cubejs .
 COPY --from=prod_dependencies /cubejs .
 
 
+# Copy cubejs-backend-native to replace @cubejs-backend/native
+COPY packages/cubejs-backend-native /cube/node_modules/@cubejs-backend/native
+# Remove the target directory
+# RUN rm -rf /cube/node_modules/@cubejs-backend/native/target
+
+
+
 
 # By default Node dont search in parent directory from /cube/conf, @todo Reaserch a little bit more
 ENV NODE_PATH=/cube/conf/node_modules:/cube/node_modules
