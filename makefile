@@ -13,8 +13,16 @@ all: build
 build:
 	docker build --no-cache -t $(IMAGE_NAME):$(DATE_TAG) --progress=plain --build-arg IMAGE_VERSION=${IMAGE_VERSION} -f packages/cubejs-docker/release.Dockerfile . 2>&1 | tee build.log
 
-# Clean up the Docker image
-clean:
-	docker rmi $(IMAGE_NAME):$(DATE_TAG)
+# Build the Docker image with a fixed tag for development
+dev:
+	docker build --no-cache -t $(IMAGE_NAME):dev --progress=plain --build-arg IMAGE_VERSION=${IMAGE_VERSION} -f packages/cubejs-docker/release.Dockerfile . 2>&1 | tee build_dev.log
 
-.PHONY: all build clean
+# Prune Docker system
+prune:
+	docker system prune --all --volumes -f
+
+# Clean up all Docker images built by this Makefile
+clean:
+	docker rmi $$(docker images $(IMAGE_NAME) -q) 2>/dev/null || true
+
+.PHONY: all build dev prune clean

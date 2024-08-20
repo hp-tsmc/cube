@@ -1,4 +1,5 @@
-FROM node:18.20.1-bullseye-slim AS base
+# FROM node:18.20.1-bullseye-slim AS base
+FROM node:18.20.4-bookworm-slim AS base
 
 ARG IMAGE_VERSION=dev
 
@@ -8,8 +9,8 @@ ENV CI=0
 
 RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y --no-install-recommends rxvt-unicode libssl1.1 curl \
-       cmake python3 libpython3-dev gcc g++ make cmake openjdk-11-jdk-headless \
+    && apt-get install -y --no-install-recommends rxvt-unicode libssl3 curl \
+       cmake python3.10 python3-dev gcc g++ make cmake openjdk-17-jdk-headless \
     && rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup
@@ -170,7 +171,8 @@ RUN yarn remove lerna -W
 
 RUN find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
 
-FROM node:18.20.1-bullseye-slim
+# FROM node:18.20.1-bullseye-slim
+FROM node:18.20.4-bookworm-slim
 
 ARG IMAGE_VERSION=metrics-20240703
 
@@ -178,10 +180,19 @@ ENV CUBEJS_DOCKER_IMAGE_VERSION=$IMAGE_VERSION
 ENV CUBEJS_DOCKER_IMAGE_TAG=latest
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends rxvt-unicode libssl1.1 ca-certificates python3 libpython3-dev \
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends rxvt-unicode libssl1.1 ca-certificates python3 libpython3-dev \
+#     && rm -rf /var/lib/apt/lists/*
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends rxvt-unicode libssl3 curl ca-certificates\
+    python3.10 python3-dev libpython3.10\
     && rm -rf /var/lib/apt/lists/*
 
+# Add this line to create a symlink for libpython3.10.so.1.0
+RUN ln -s /usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0 /usr/lib/libpython3.10.so.1.0
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/libpython3.10.so.1.0
 RUN yarn policies set-version v1.22.19
 
 ENV TERM=rxvt-unicode

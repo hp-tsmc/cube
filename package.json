@@ -34,7 +34,9 @@
     "loader-utils": "^2.0.3",
     "lodash": "^4.17.21",
     "parse-url": "^8.1.0",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "mariadb": "^3.0.0",
+    "base64url": "^3.0.1"
   },
   "files": [
     "src",
