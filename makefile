@@ -25,4 +25,8 @@ prune:
 clean:
 	docker rmi $$(docker images $(IMAGE_NAME) -q) 2>/dev/null || true
 
-.PHONY: all build dev prune clean
+# Scan for critical CVEs
+scan-cve:
+	trivy image --severity CRITICAL --format json $(IMAGE_NAME):dev 2>&1 | tee scan-cve.log
+
+.PHONY: all build dev prune clean scan-cve
