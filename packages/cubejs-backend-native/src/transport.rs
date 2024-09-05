@@ -1,4 +1,4 @@
-use log::{debug, error, trace};
+use log::{debug, error, trace, info};
 use neon::prelude::*;
 use std::collections::HashMap;
 use std::fmt::Display;
@@ -259,6 +259,17 @@ impl TransportService for NodeBridgeTransport {
         member_to_alias: Option<HashMap<String, String>>,
         expression_params: Option<Vec<Option<String>>>,
     ) -> Result<SqlResponse, CubeError> {
+        println!("Debug: Executing SQL query");
+        println!("Debug: Query details: {:?}", query);
+        println!("Debug: Auth context: {:?}", ctx);
+        println!("Debug: Load request meta: {:?}", meta);
+        println!("Debug: Member to alias: {:?}", member_to_alias);
+        println!("Debug: Expression params: {:?}", expression_params);
+        info!("Executing SQL query: {:?}", query);
+        info!("Auth context: {:?}", ctx);
+        info!("Load request meta: {:?}", meta);
+        info!("Member to alias: {:?}", member_to_alias);
+        info!("Expression params: {:?}", expression_params);
         let native_auth = ctx
             .as_any()
             .downcast_ref::<NativeAuthContext>()

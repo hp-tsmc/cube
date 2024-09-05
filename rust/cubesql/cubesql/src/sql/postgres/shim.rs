@@ -32,6 +32,8 @@ use sqlparser::ast::{self, CloseCursor, FetchDirection, Query, SetExpr, Statemen
 use tokio::{io::AsyncWriteExt, net::TcpStream};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
+use prometheus::Histogram;
+use std::time::Instant;
 
 pub struct AsyncPostgresShim {
     socket: TcpStream,
@@ -244,6 +246,7 @@ impl AsyncPostgresShim {
         socket: TcpStream,
         session: Arc<Session>,
         logger: Arc<dyn ContextLogger>,
+        query_duration_histogram: Histogram,
     ) -> Result<(), ConnectionError> {
         let mut shim = Self {
             semifast_shutdown_interruptor,
@@ -254,15 +257,21 @@ impl AsyncPostgresShim {
             session,
             logger,
         };
-
+        // Measure query duration
+        let start_time = Instant::now();
         let run_result = tokio::select! {
             _ = fast_shutdown_interruptor.cancelled() => {
                 Self::flush_and_write_admin_shutdown_fatal_message(&mut shim).await?;
                 shim.socket.shutdown().await?;
                 return Ok(());
             }
-            res = shim.run() => res,
+            res = shim.run(query_duration_histogram.clone()) => res,
         };
+        // Measure query duration
+        let duration = start_time.elapsed();
+        query_duration_histogram.observe(duration.as_secs_f64());
+        let message = format!("[run_on] Query duration: {:?}", duration);
+        println!("{}", message);
 
         match run_result {
             Err(e) => {
@@ -312,7 +321,7 @@ impl AsyncPostgresShim {
         )
     }
 
-    pub async fn run(&mut self) -> Result<(), ConnectionError> {
+    pub async fn run(&mut self, query_duration_histogram: Histogram) -> Result<(), ConnectionError> {
         let initial_parameters = match self.process_initial_message().await? {
             StartupState::Success(parameters) => parameters,
             StartupState::SslRequested => match self.process_initial_message().await? {
@@ -343,6 +352,8 @@ impl AsyncPostgresShim {
         // Clone here to avoid conflicting borrows of self in the tokio::select!.
         let semifast_shutdown_interruptor = self.semifast_shutdown_interruptor.clone();
 
+        let anchor = format!("run()");
+        println!("{}", anchor);
         loop {
             let mut doing_extended_query_message = false;
             let semifast_shutdownable = self.is_semifast_shutdownable();
@@ -353,7 +364,8 @@ impl AsyncPostgresShim {
                 }
                 message_result = buffer::read_message(&mut self.socket) => message_result?
             };
-
+            // Measure query duration
+            let start_time = Instant::now();
             let result = match message {
                 protocol::FrontendMessage::Query(body) => {
                     let span_id = Self::new_span_id(body.query.clone());
@@ -502,6 +514,13 @@ impl AsyncPostgresShim {
                     ))
                 }
             };
+
+            let duration = start_time.elapsed();
+
+            // Log the query duration
+            println!("[run] after handle message: {:?}", duration);
+            query_duration_histogram.observe(duration.as_secs_f64());
+
             if let Err(err) = result {
                 if doing_extended_query_message {
                     tracked_error = Some(err);
@@ -1812,10 +1831,10 @@ impl AsyncPostgresShim {
                             Some(span_id.clone()),
                             auth_context,
                             self.session.state.get_load_request_meta(),
-                            "Load Request Success".to_string(),
+                            "Load Request Success~Hello Games mark 2".to_string(),
                             serde_json::json!({
                                 "query": {
-                                    "sql": query,
+                                    "sql-hello games": query,
                                 },
                                 "apiType": "sql",
                                 "duration": start_time.elapsed().unwrap().as_millis() as u64,

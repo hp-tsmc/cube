@@ -137,6 +137,7 @@ export class QuestDriver<Config extends QuestDriverConfiguration = QuestDriverCo
 
   public async query<R = unknown>(query: string, values: unknown[], _options?: QueryOptions): Promise<R[]> {
     const result = await this.queryResponse(query, values);
+    // @ts-ignore
     return result.rows;
   }
 
@@ -148,29 +149,38 @@ export class QuestDriver<Config extends QuestDriverConfiguration = QuestDriverCo
         text: query,
         values: values || [],
         types: {
+          // @ts-ignore
           getTypeParser: this.getTypeParser,
         },
       });
+      // @ts-ignore
       return res;
     } finally {
+      // @ts-ignore
       conn.release();
     }
   }
 
   private getTypeParser(dataTypeID: TypeId, format: TypeFormat | undefined) {
+    // @ts-ignore
     const isTimestamp = timestampDataTypes.includes(dataTypeID);
     if (isTimestamp) {
       return timestampTypeParser;
     }
 
+    // @ts-ignore
     const parser = types.getTypeParser(dataTypeID, format);
     return (val: any) => parser(val);
   }
 
   public async downloadQueryResults(query: string, values: unknown[], _options: DownloadQueryResultsOptions) {
+    // @ts-ignore
     const res = await this.queryResponse(query, values);
+    // @ts-ignore
     return {
+      // @ts-ignore
       rows: res.rows,
+      // @ts-ignore
       types: this.mapFields(res.fields),
     };
   }

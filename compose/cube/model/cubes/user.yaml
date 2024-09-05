@@ -1,0 +1,12 @@
+cubes:
+  - name: users
+    sql_table: users
+ 
+    dimensions:
+      - name: name
+        sql: name
+        type: string
+ 
+      - name: email
+        sql: email
+        type: string

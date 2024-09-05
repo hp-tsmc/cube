@@ -188,19 +188,28 @@ export class ScaffoldingSchema {
       // @ts-ignore
       R.unnest,
       R.groupBy(n => n[0]),
-      R.map(groupedNameToDef => groupedNameToDef.map(nameToDef => nameToDef[1]))
+      // @ts-ignore
+      R.map((groupedNameToDef: Record<string, any[]>) => groupedNameToDef[0].map((nameToDef: any) => nameToDef[1]))
     )(
       // @ts-ignore
       tableNames.map(tableName => {
+        // @ts-ignore 
         const [schema, table] = this.parseTableName(tableName);
+        // @ts-ignore
         const tableDefinition = this.resolveTableDefinition(tableName);
+        // @ts-ignore
         const definition = {
           schema, table, tableDefinition, tableName
         };
+        // @ts-ignore
         const tableizeName = inflection.tableize(this.fixCase(table));
+        // @ts-ignore
         const parts = tableizeName.split('_');
+        // @ts-ignore
         const tableNamesFromParts = R.range(0, parts.length - 1).map(toDrop => inflection.tableize(R.drop(toDrop, parts).join('_')));
+        // @ts-ignore
         const names = R.uniq([table, tableizeName].concat(tableNamesFromParts));
+        // @ts-ignore
         return names.map(n => [n, definition]);
       })
     ) as any;

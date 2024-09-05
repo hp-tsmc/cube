@@ -12,6 +12,7 @@ use cubesql::{
 };
 use std::sync::Arc;
 use tokio::task::JoinHandle;
+use prometheus::{Registry};
 
 pub type LoopHandle = JoinHandle<Result<(), CubeError>>;
 
@@ -113,6 +114,7 @@ pub struct NodeConfigurationFactoryOptions {
 #[async_trait]
 pub trait NodeConfiguration {
     fn new(options: NodeConfigurationFactoryOptions) -> Self;
+    fn with_registry(self, registry: Registry) -> Self;
 
     async fn configure(
         &self,
@@ -124,6 +126,7 @@ pub trait NodeConfiguration {
 #[async_trait]
 impl NodeConfiguration for NodeConfigurationImpl {
     fn new(options: NodeConfigurationFactoryOptions) -> Self {
+        println!("new NodeConfiguration in cubejs-backend-native");
         let config = Config::default();
         let config = config.update_config(|mut c| {
             if let Some(p) = options.pg_port {
@@ -141,11 +144,17 @@ impl NodeConfiguration for NodeConfigurationImpl {
         }
     }
 
+    fn with_registry(mut self, registry: Registry) -> Self {
+        self.config = self.config.with_registry(registry);
+        self
+    }
+
     async fn configure(
         &self,
         transport: Arc<NodeBridgeTransport>,
         auth: Arc<NodeBridgeAuthService>,
     ) -> Arc<NodeCubeServices> {
+        println!("configuring in cubejs-backend-native");
         let injector = self.config.injector();
 
         self.config.configure().await;

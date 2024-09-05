@@ -192,6 +192,7 @@ export class MaterializeDriver extends PostgresDriver {
     let finish = false;
 
     while (!finish) {
+      // @ts-ignore
       const results: QueryResult<any> | undefined = await conn.query(queryParams);
       const { rows, rowCount } = results;
 
@@ -224,10 +225,13 @@ export class MaterializeDriver extends PostgresDriver {
       await this.prepareConnection(conn);
       await conn.query('BEGIN;', []);
       await conn.query(`DECLARE ${cursorId} CURSOR FOR ${query}`, values);
+      // @ts-ignore
       const { fields } = await conn.query({
         text: `FETCH 0 FROM ${cursorId};`,
         values: [],
+        // @ts-ignore
         types: {
+          // @ts-ignore
           getTypeParser: this.getTypeParser,
         },
       });

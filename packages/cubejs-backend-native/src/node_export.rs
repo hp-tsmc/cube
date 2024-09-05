@@ -36,6 +36,11 @@ use cubesql::{telemetry::ReportingLogger, CubeError};
 
 use neon::prelude::*;
 
+use hyper::{Body, Response, Server};
+use hyper::service::{make_service_fn, service_fn};
+use prometheus::{Encoder, TextEncoder, Registry};
+use prometheus_exporter::prometheus::register_gauge;
+
 struct SQLInterface {
     services: Arc<NodeCubeServices>,
 }
@@ -44,8 +49,37 @@ impl Finalize for SQLInterface {}
 
 impl SQLInterface {
     pub fn new(services: Arc<NodeCubeServices>) -> Self {
+        println!("new SQLInterface in node_export.rs");
         Self { services }
     }
+}
+
+async fn run_metrics_server(registry: Registry, addr: std::net::SocketAddr) {
+    let metrics_service = make_service_fn(move |_| {
+        let registry = registry.clone();
+        async move {
+            Ok::<_, hyper::Error>(service_fn(move |_| metrics_handler(registry.clone())))
+        }
+    });
+
+    println!("Starting metrics server on {:?}", addr);
+
+    let server = Server::bind(&addr).serve(metrics_service);
+    if let Err(e) = server.await {
+        eprintln!("Metrics server error: {}", e);
+    }
+}
+
+async fn metrics_handler(registry: Registry) -> Result<Response<Body>, hyper::Error> {
+    let encoder = TextEncoder::new();
+    let metric_families = registry.gather();
+    let mut buffer = vec![];
+    encoder.encode(&metric_families, &mut buffer).unwrap();
+    Ok(Response::builder()
+        .status(200)
+        .header("Content-Type", encoder.format_type())
+        .body(Body::from(buffer))
+        .unwrap())
 }
 
 fn register_interface<C: NodeConfiguration>(mut cx: FunctionContext) -> JsResult<JsPromise> {
@@ -111,10 +145,17 @@ fn register_interface<C: NodeConfiguration>(mut cx: FunctionContext) -> JsResult
             pg_port,
         });
 
+        let registry = Registry::new();
+        let config = config.with_registry(registry.clone());
+        
         runtime.block_on(async move {
             let services = config
                 .configure(Arc::new(transport_service), Arc::new(auth_service))
                 .await;
+
+            // Start the metrics server
+            let metrics_addr = ([0, 0, 0, 0], 9102).into();
+            tokio::spawn(run_metrics_server(registry, metrics_addr));
 
             let interface = SQLInterface::new(services.clone());
 

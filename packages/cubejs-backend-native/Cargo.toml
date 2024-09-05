@@ -43,6 +43,11 @@ tokio = { version = "1", features = ["full", "rt"] }
 uuid = { version = "1", features = ["v4"] }
 bytes = "1.5.0"
 regex = "1.10.2"
+prometheus = { version = "0.13", features = ["process"] }
+hyper = { version = "0.14", features = ["full"] }
+prometheus_exporter = "0.8"
+env_logger = "0.9"
+reqwest = { version = "0.11", features = ["blocking"] }
 
 [dependencies.neon]
 version = "=1"

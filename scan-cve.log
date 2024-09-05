@@ -1,0 +1,896 @@
+2024-08-26T01:00:42+08:00	INFO	[vuln] Vulnerability scanning is enabled
+2024-08-26T01:00:42+08:00	INFO	[secret] Secret scanning is enabled
+2024-08-26T01:00:42+08:00	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+2024-08-26T01:00:42+08:00	INFO	[secret] Please see also https://aquasecurity.github.io/trivy/v0.54/docs/scanner/secret#recommendation for faster secret detection
+2024-08-26T01:01:03+08:00	INFO	Detected OS	family="debian" version="11.9"
+2024-08-26T01:01:03+08:00	INFO	[debian] Detecting vulnerabilities...	os_version="11" pkg_num=158
+2024-08-26T01:01:03+08:00	INFO	Number of language-specific files	num=4
+2024-08-26T01:01:03+08:00	INFO	[cargo] Detecting vulnerabilities...
+2024-08-26T01:01:03+08:00	INFO	[python-pkg] Detecting vulnerabilities...
+2024-08-26T01:01:03+08:00	INFO	[node-pkg] Detecting vulnerabilities...
+2024-08-26T01:01:03+08:00	INFO	[jar] Detecting vulnerabilities...
+2024-08-26T01:01:03+08:00	WARN	Using severities from other vendors for some vulnerabilities. Read https://aquasecurity.github.io/trivy/v0.54/docs/scanner/vulnerability#severity-selection for details.
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2024-08-26T01:01:03.461377464+08:00",
+  "ArtifactName": "hpdevelop/cubejs:dev",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "debian",
+      "Name": "11.9"
+    },
+    "ImageID": "sha256:1491d26b7e7122b6e3e00828bf4bdc81341024343d44eb45fc415c07ac1b1c5a",
+    "DiffIDs": [
+      "sha256:420179ad2efafbf953a0c75f68a4c9dfaf38a98643df97d415bce49b179895f7",
+      "sha256:5e81fdc8ea3a77b8c737759f66b679e8b6cc22320baa186a2608dd11a4fbee47",
+      "sha256:7e81d93759d11c0e9ed5d67db87fc4b46e922873bb6d48f94a6b8a2e4e8aadbc",
+      "sha256:979b53425191574b68923d57d15f18c3228c3db6dfdb36800b1216c408eebcb9",
+      "sha256:c2a432f97fb6a08c0dbb3bc7642eeb0e6d6edda7074fc46dfe48b640893763d0",
+      "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba",
+      "sha256:6bf58d30a65fcba9caa0b2ca7534e0d6662b27abcd6e77ee5e2c313a0c23be1c",
+      "sha256:49c819ee25848ac8622635ba8da61c60885e9795cc4ef5b3ca7fbf34a5d981d3",
+      "sha256:81baf73458647aee8c7915e5a19be08d86c03519322aee5bc507082d0b263983",
+      "sha256:a4f27b1ecb16135dd7392a64b31bf99928deb5d173b070470edf805a6eb0342c",
+      "sha256:5d267137c39ae26cc533b66f51a4e2c2604b2c2d0b601c4ba1517b8b1cba1450",
+      "sha256:ea084f6106d45cb8e7a66b392773b9188cd6c19d18312a07f38afbe6f70e4882",
+      "sha256:a1d0ff0d155289a24e95f0f9e485b4f5f9930394e9b6f3351b55bfd1dcd1243e",
+      "sha256:3d24bab80415c0cdb83733fdd4d651634a06e3b7ad785a80e021e0bea4274017"
+    ],
+    "RepoTags": [
+      "hpdevelop/cubejs:dev"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "created": "2024-08-26T01:00:15.412392644+08:00",
+      "history": [
+        {
+          "created": "2024-04-10T01:51:11Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:5d6b639e8b6bcc01149b7486502558088f9816200063ca72b91a1f989bc8d85e in / "
+        },
+        {
+          "created": "2024-04-10T01:51:11Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"bash\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-04-10T12:40:24Z",
+          "created_by": "/bin/sh -c groupadd --gid 1000 node   \u0026\u0026 useradd --uid 1000 --gid node --shell /bin/bash --create-home node"
+        },
+        {
+          "created": "2024-04-10T12:46:35Z",
+          "created_by": "/bin/sh -c #(nop)  ENV NODE_VERSION=18.20.1",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-04-10T12:47:00Z",
+          "created_by": "/bin/sh -c ARCH= OPENSSL_ARCH= \u0026\u0026 dpkgArch=\"$(dpkg --print-architecture)\"     \u0026\u0026 case \"${dpkgArch##*-}\" in       amd64) ARCH='x64' OPENSSL_ARCH='linux-x86_64';;       ppc64el) ARCH='ppc64le' OPENSSL_ARCH='linux-ppc64le';;       s390x) ARCH='s390x' OPENSSL_ARCH='linux*-s390x';;       arm64) ARCH='arm64' OPENSSL_ARCH='linux-aarch64';;       armhf) ARCH='armv7l' OPENSSL_ARCH='linux-armv4';;       i386) ARCH='x86' OPENSSL_ARCH='linux-elf';;       *) echo \"unsupported architecture\"; exit 1 ;;     esac     \u0026\u0026 set -ex     \u0026\u0026 apt-get update \u0026\u0026 apt-get install -y ca-certificates curl wget gnupg dirmngr xz-utils libatomic1 --no-install-recommends     \u0026\u0026 rm -rf /var/lib/apt/lists/*     \u0026\u0026 export GNUPGHOME=\"$(mktemp -d)\"     \u0026\u0026 for key in       4ED778F539E3634C779C87C6D7062848A1AB005C       141F07595B7B3FFE74309A937405533BE57C7D57       74F12602B6F1C4E913FAA37AD3A89613643B6201       DD792F5973C6DE52C432CBDAC77ABFA00DDBF2B7       61FC681DFB92A079F1685E77973F295594EC4689       8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600       C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8       890C08DB8579162FEE0DF9DB8BEAB4DFCF555EF4       C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C       108F52B48DB57BB0CC439B2997B01419BD92F80A       A363A499291CBBC940DD62E41F10027AF002F8B0       CC68F5A3106FF448322E48ED27F5E38D5B0A215F     ; do       gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;     done     \u0026\u0026 curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH.tar.xz\"     \u0026\u0026 curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc\"     \u0026\u0026 gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc     \u0026\u0026 gpgconf --kill all     \u0026\u0026 rm -rf \"$GNUPGHOME\"     \u0026\u0026 grep \" node-v$NODE_VERSION-linux-$ARCH.tar.xz\\$\" SHASUMS256.txt | sha256sum -c -     \u0026\u0026 tar -xJf \"node-v$NODE_VERSION-linux-$ARCH.tar.xz\" -C /usr/local --strip-components=1 --no-same-owner     \u0026\u0026 rm \"node-v$NODE_VERSION-linux-$ARCH.tar.xz\" SHASUMS256.txt.asc SHASUMS256.txt     \u0026\u0026 find /usr/local/include/node/openssl/archs -mindepth 1 -maxdepth 1 ! -name \"$OPENSSL_ARCH\" -exec rm -rf {} \\;     \u0026\u0026 apt-mark auto '.*' \u003e /dev/null     \u0026\u0026 find /usr/local -type f -executable -exec ldd '{}' ';'       | awk '/=\u003e/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); print so }'       | sort -u       | xargs -r dpkg-query --search       | cut -d: -f1       | sort -u       | xargs -r apt-mark manual     \u0026\u0026 apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false     \u0026\u0026 ln -s /usr/local/bin/node /usr/local/bin/nodejs     \u0026\u0026 node --version     \u0026\u0026 npm --version"
+        },
+        {
+          "created": "2024-04-10T12:47:00Z",
+          "created_by": "/bin/sh -c #(nop)  ENV YARN_VERSION=1.22.19",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-04-10T12:47:13Z",
+          "created_by": "/bin/sh -c set -ex   \u0026\u0026 savedAptMark=\"$(apt-mark showmanual)\"   \u0026\u0026 apt-get update \u0026\u0026 apt-get install -y ca-certificates curl wget gnupg dirmngr --no-install-recommends   \u0026\u0026 rm -rf /var/lib/apt/lists/*   \u0026\u0026 export GNUPGHOME=\"$(mktemp -d)\"   \u0026\u0026 for key in     6A010C5166006599AA17F08146C2130DFD2497F5   ; do     gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||     gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;   done   \u0026\u0026 curl -fsSLO --compressed \"https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz\"   \u0026\u0026 curl -fsSLO --compressed \"https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc\"   \u0026\u0026 gpg --batch --verify yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz   \u0026\u0026 gpgconf --kill all   \u0026\u0026 rm -rf \"$GNUPGHOME\"   \u0026\u0026 mkdir -p /opt   \u0026\u0026 tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/   \u0026\u0026 ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn   \u0026\u0026 ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg   \u0026\u0026 rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz   \u0026\u0026 apt-mark auto '.*' \u003e /dev/null   \u0026\u0026 { [ -z \"$savedAptMark\" ] || apt-mark manual $savedAptMark \u003e /dev/null; }   \u0026\u0026 find /usr/local -type f -executable -exec ldd '{}' ';'     | awk '/=\u003e/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); print so }'     | sort -u     | xargs -r dpkg-query --search     | cut -d: -f1     | sort -u     | xargs -r apt-mark manual   \u0026\u0026 apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false   \u0026\u0026 yarn --version"
+        },
+        {
+          "created": "2024-04-10T12:47:13Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:4d192565a7220e135cab6c77fbc1c73211b69f3d9fb37e62857b2c6eb9363d51 in /usr/local/bin/ "
+        },
+        {
+          "created": "2024-04-10T12:47:13Z",
+          "created_by": "/bin/sh -c #(nop)  ENTRYPOINT [\"docker-entrypoint.sh\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-04-10T12:47:13Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"node\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:53:56Z",
+          "created_by": "ARG IMAGE_VERSION=0.1",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:53:56Z",
+          "created_by": "ENV CUBEJS_DOCKER_IMAGE_VERSION=0.1",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:53:56Z",
+          "created_by": "ENV CUBEJS_DOCKER_IMAGE_TAG=latest",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:53:56Z",
+          "created_by": "ENV DEBIAN_FRONTEND=noninteractive",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:53:56Z",
+          "created_by": "RUN |1 IMAGE_VERSION=0.1 /bin/sh -c apt-get update     \u0026\u0026 apt-get install -y --no-install-recommends rxvt-unicode libssl1.1 ca-certificates python3 libpython3-dev     \u0026\u0026 rm -rf /var/lib/apt/lists/* # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T16:54:02Z",
+          "created_by": "RUN |1 IMAGE_VERSION=0.1 /bin/sh -c yarn policies set-version v1.22.19 # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T16:54:02Z",
+          "created_by": "ENV TERM=rxvt-unicode",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:54:02Z",
+          "created_by": "ENV NODE_ENV=production",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T16:54:02Z",
+          "created_by": "WORKDIR /cube",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T16:59:58Z",
+          "created_by": "COPY /cubejs . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T17:00:14Z",
+          "created_by": "COPY /cubejs . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T17:00:14Z",
+          "created_by": "ENV NODE_PATH=/cube/conf/node_modules:/cube/node_modules",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T17:00:14Z",
+          "created_by": "ENV PYTHONUNBUFFERED=1",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T17:00:14Z",
+          "created_by": "COPY packages/cubejs-docker/bin-release/cubejs /usr/local/bin/cubejs # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T17:00:15Z",
+          "created_by": "RUN |1 IMAGE_VERSION=0.1 /bin/sh -c ln -s  /cubejs/rust/cubestore/bin/cubestore-dev /usr/local/bin/cubestore-dev # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T17:00:15Z",
+          "created_by": "ADD packages/cubejs-docker/duckdb_extension/httpfs.duckdb_extension /root/.duckdb/extensions/v1.0.0/linux_amd64/httpfs.duckdb_extension # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T17:00:15Z",
+          "created_by": "WORKDIR /cube/conf",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-08-25T17:00:15Z",
+          "created_by": "EXPOSE map[4000/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-08-25T17:00:15Z",
+          "created_by": "CMD [\"cubejs\" \"server\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:420179ad2efafbf953a0c75f68a4c9dfaf38a98643df97d415bce49b179895f7",
+          "sha256:5e81fdc8ea3a77b8c737759f66b679e8b6cc22320baa186a2608dd11a4fbee47",
+          "sha256:7e81d93759d11c0e9ed5d67db87fc4b46e922873bb6d48f94a6b8a2e4e8aadbc",
+          "sha256:979b53425191574b68923d57d15f18c3228c3db6dfdb36800b1216c408eebcb9",
+          "sha256:c2a432f97fb6a08c0dbb3bc7642eeb0e6d6edda7074fc46dfe48b640893763d0",
+          "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba",
+          "sha256:6bf58d30a65fcba9caa0b2ca7534e0d6662b27abcd6e77ee5e2c313a0c23be1c",
+          "sha256:49c819ee25848ac8622635ba8da61c60885e9795cc4ef5b3ca7fbf34a5d981d3",
+          "sha256:81baf73458647aee8c7915e5a19be08d86c03519322aee5bc507082d0b263983",
+          "sha256:a4f27b1ecb16135dd7392a64b31bf99928deb5d173b070470edf805a6eb0342c",
+          "sha256:5d267137c39ae26cc533b66f51a4e2c2604b2c2d0b601c4ba1517b8b1cba1450",
+          "sha256:ea084f6106d45cb8e7a66b392773b9188cd6c19d18312a07f38afbe6f70e4882",
+          "sha256:a1d0ff0d155289a24e95f0f9e485b4f5f9930394e9b6f3351b55bfd1dcd1243e",
+          "sha256:3d24bab80415c0cdb83733fdd4d651634a06e3b7ad785a80e021e0bea4274017"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "cubejs",
+          "server"
+        ],
+        "Entrypoint": [
+          "docker-entrypoint.sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "NODE_VERSION=18.20.1",
+          "YARN_VERSION=1.22.19",
+          "CUBEJS_DOCKER_IMAGE_VERSION=0.1",
+          "CUBEJS_DOCKER_IMAGE_TAG=latest",
+          "DEBIAN_FRONTEND=noninteractive",
+          "TERM=rxvt-unicode",
+          "NODE_ENV=production",
+          "NODE_PATH=/cube/conf/node_modules:/cube/node_modules",
+          "PYTHONUNBUFFERED=1"
+        ],
+        "WorkingDir": "/cube/conf",
+        "ArgsEscaped": true
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "hpdevelop/cubejs:dev (debian 11.9)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2019-8457",
+          "PkgID": "libdb5.3@5.3.28+dfsg1-0.8",
+          "PkgName": "libdb5.3",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/libdb5.3@5.3.28%2Bdfsg1-0.8?arch=amd64\u0026distro=debian-11.9",
+            "UID": "c34993c59c406e06"
+          },
+          "InstalledVersion": "5.3.28+dfsg1-0.8",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:420179ad2efafbf953a0c75f68a4c9dfaf38a98643df97d415bce49b179895f7"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-8457",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "sqlite: heap out-of-bound read in function rtreenode()",
+          "Description": "SQLite3 from 3.6.0 to and including 3.27.2 is vulnerable to heap out-of-bound read in the rtreenode() function when handling invalid rtree tables.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-125"
+          ],
+          "VendorSeverity": {
+            "azure": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-06/msg00074.html",
+            "https://access.redhat.com/security/cve/CVE-2019-8457",
+            "https://kc.mcafee.com/corporate/index?page=content\u0026id=SB10365",
+            "https://linux.oracle.com/cve/CVE-2019-8457.html",
+            "https://linux.oracle.com/errata/ELSA-2020-1810.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/OPKYSWCOM3CL66RI76TYVIG6TJ263RXH/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/SJPFGA45DI4F5MCF2OAACGH3HQOF4G3M/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-8457",
+            "https://security.netapp.com/advisory/ntap-20190606-0002/",
+            "https://ubuntu.com/security/notices/USN-4004-1",
+            "https://ubuntu.com/security/notices/USN-4004-2",
+            "https://ubuntu.com/security/notices/USN-4019-1",
+            "https://ubuntu.com/security/notices/USN-4019-2",
+            "https://usn.ubuntu.com/4004-1/",
+            "https://usn.ubuntu.com/4004-2/",
+            "https://usn.ubuntu.com/4019-1/",
+            "https://usn.ubuntu.com/4019-2/",
+            "https://www.cve.org/CVERecord?id=CVE-2019-8457",
+            "https://www.oracle.com/security-alerts/cpuapr2020.html",
+            "https://www.oracle.com/security-alerts/cpujan2020.html",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://www.oracle.com/technetwork/security-advisory/cpuoct2019-5072832.html",
+            "https://www.sqlite.org/releaselog/3_28_0.html",
+            "https://www.sqlite.org/src/info/90acdbfce9c08858"
+          ],
+          "PublishedDate": "2019-05-30T16:29:01.84Z",
+          "LastModifiedDate": "2023-11-07T03:13:30.25Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-29921",
+          "PkgID": "libpython3.9@3.9.2-1",
+          "PkgName": "libpython3.9",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/libpython3.9@3.9.2-1?arch=amd64\u0026distro=debian-11.9",
+            "UID": "1e082505e5fa405e"
+          },
+          "InstalledVersion": "3.9.2-1",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-29921",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "python-ipaddress: Improper input validation of octal strings",
+          "Description": "In Python before 3,9,5, the ipaddress library mishandles leading zero characters in the octets of an IP address string. This (in some situations) allows attackers to bypass access control that is based on IP addresses.",
+          "Severity": "CRITICAL",
+          "VendorSeverity": {
+            "alma": 2,
+            "bitnami": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-29921",
+            "https://bugs.python.org/issue36384",
+            "https://docs.python.org/3/library/ipaddress.html",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Misc/NEWS.d/3.8.0a4.rst",
+            "https://github.com/python/cpython/pull/12577",
+            "https://github.com/python/cpython/pull/25099",
+            "https://github.com/sickcodes",
+            "https://github.com/sickcodes/security/blob/master/advisories/SICK-2021-014.md",
+            "https://linux.oracle.com/cve/CVE-2021-29921.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-29921",
+            "https://python-security.readthedocs.io/vuln/ipaddress-ipv4-leading-zeros.html",
+            "https://security.gentoo.org/glsa/202305-02",
+            "https://security.netapp.com/advisory/ntap-20210622-0003/",
+            "https://sick.codes/sick-2021-014",
+            "https://ubuntu.com/security/notices/USN-4973-1",
+            "https://ubuntu.com/security/notices/USN-4973-2",
+            "https://ubuntu.com/security/notices/USN-6891-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-29921",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-05-06T13:15:12.573Z",
+          "LastModifiedDate": "2023-05-03T11:15:10.457Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-29921",
+          "PkgID": "libpython3.9-dev@3.9.2-1",
+          "PkgName": "libpython3.9-dev",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/libpython3.9-dev@3.9.2-1?arch=amd64\u0026distro=debian-11.9",
+            "UID": "b8b27544620c0135"
+          },
+          "InstalledVersion": "3.9.2-1",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-29921",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "python-ipaddress: Improper input validation of octal strings",
+          "Description": "In Python before 3,9,5, the ipaddress library mishandles leading zero characters in the octets of an IP address string. This (in some situations) allows attackers to bypass access control that is based on IP addresses.",
+          "Severity": "CRITICAL",
+          "VendorSeverity": {
+            "alma": 2,
+            "bitnami": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-29921",
+            "https://bugs.python.org/issue36384",
+            "https://docs.python.org/3/library/ipaddress.html",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Misc/NEWS.d/3.8.0a4.rst",
+            "https://github.com/python/cpython/pull/12577",
+            "https://github.com/python/cpython/pull/25099",
+            "https://github.com/sickcodes",
+            "https://github.com/sickcodes/security/blob/master/advisories/SICK-2021-014.md",
+            "https://linux.oracle.com/cve/CVE-2021-29921.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-29921",
+            "https://python-security.readthedocs.io/vuln/ipaddress-ipv4-leading-zeros.html",
+            "https://security.gentoo.org/glsa/202305-02",
+            "https://security.netapp.com/advisory/ntap-20210622-0003/",
+            "https://sick.codes/sick-2021-014",
+            "https://ubuntu.com/security/notices/USN-4973-1",
+            "https://ubuntu.com/security/notices/USN-4973-2",
+            "https://ubuntu.com/security/notices/USN-6891-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-29921",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-05-06T13:15:12.573Z",
+          "LastModifiedDate": "2023-05-03T11:15:10.457Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-29921",
+          "PkgID": "libpython3.9-minimal@3.9.2-1",
+          "PkgName": "libpython3.9-minimal",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/libpython3.9-minimal@3.9.2-1?arch=amd64\u0026distro=debian-11.9",
+            "UID": "bfbb9770bdda350f"
+          },
+          "InstalledVersion": "3.9.2-1",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-29921",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "python-ipaddress: Improper input validation of octal strings",
+          "Description": "In Python before 3,9,5, the ipaddress library mishandles leading zero characters in the octets of an IP address string. This (in some situations) allows attackers to bypass access control that is based on IP addresses.",
+          "Severity": "CRITICAL",
+          "VendorSeverity": {
+            "alma": 2,
+            "bitnami": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-29921",
+            "https://bugs.python.org/issue36384",
+            "https://docs.python.org/3/library/ipaddress.html",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Misc/NEWS.d/3.8.0a4.rst",
+            "https://github.com/python/cpython/pull/12577",
+            "https://github.com/python/cpython/pull/25099",
+            "https://github.com/sickcodes",
+            "https://github.com/sickcodes/security/blob/master/advisories/SICK-2021-014.md",
+            "https://linux.oracle.com/cve/CVE-2021-29921.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-29921",
+            "https://python-security.readthedocs.io/vuln/ipaddress-ipv4-leading-zeros.html",
+            "https://security.gentoo.org/glsa/202305-02",
+            "https://security.netapp.com/advisory/ntap-20210622-0003/",
+            "https://sick.codes/sick-2021-014",
+            "https://ubuntu.com/security/notices/USN-4973-1",
+            "https://ubuntu.com/security/notices/USN-4973-2",
+            "https://ubuntu.com/security/notices/USN-6891-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-29921",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-05-06T13:15:12.573Z",
+          "LastModifiedDate": "2023-05-03T11:15:10.457Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-29921",
+          "PkgID": "libpython3.9-stdlib@3.9.2-1",
+          "PkgName": "libpython3.9-stdlib",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/libpython3.9-stdlib@3.9.2-1?arch=amd64\u0026distro=debian-11.9",
+            "UID": "b8af6d0091028157"
+          },
+          "InstalledVersion": "3.9.2-1",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-29921",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "python-ipaddress: Improper input validation of octal strings",
+          "Description": "In Python before 3,9,5, the ipaddress library mishandles leading zero characters in the octets of an IP address string. This (in some situations) allows attackers to bypass access control that is based on IP addresses.",
+          "Severity": "CRITICAL",
+          "VendorSeverity": {
+            "alma": 2,
+            "bitnami": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-29921",
+            "https://bugs.python.org/issue36384",
+            "https://docs.python.org/3/library/ipaddress.html",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Misc/NEWS.d/3.8.0a4.rst",
+            "https://github.com/python/cpython/pull/12577",
+            "https://github.com/python/cpython/pull/25099",
+            "https://github.com/sickcodes",
+            "https://github.com/sickcodes/security/blob/master/advisories/SICK-2021-014.md",
+            "https://linux.oracle.com/cve/CVE-2021-29921.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-29921",
+            "https://python-security.readthedocs.io/vuln/ipaddress-ipv4-leading-zeros.html",
+            "https://security.gentoo.org/glsa/202305-02",
+            "https://security.netapp.com/advisory/ntap-20210622-0003/",
+            "https://sick.codes/sick-2021-014",
+            "https://ubuntu.com/security/notices/USN-4973-1",
+            "https://ubuntu.com/security/notices/USN-4973-2",
+            "https://ubuntu.com/security/notices/USN-6891-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-29921",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-05-06T13:15:12.573Z",
+          "LastModifiedDate": "2023-05-03T11:15:10.457Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-29921",
+          "PkgID": "python3.9@3.9.2-1",
+          "PkgName": "python3.9",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/python3.9@3.9.2-1?arch=amd64\u0026distro=debian-11.9",
+            "UID": "3e7d29b6bd868e28"
+          },
+          "InstalledVersion": "3.9.2-1",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-29921",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "python-ipaddress: Improper input validation of octal strings",
+          "Description": "In Python before 3,9,5, the ipaddress library mishandles leading zero characters in the octets of an IP address string. This (in some situations) allows attackers to bypass access control that is based on IP addresses.",
+          "Severity": "CRITICAL",
+          "VendorSeverity": {
+            "alma": 2,
+            "bitnami": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-29921",
+            "https://bugs.python.org/issue36384",
+            "https://docs.python.org/3/library/ipaddress.html",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Misc/NEWS.d/3.8.0a4.rst",
+            "https://github.com/python/cpython/pull/12577",
+            "https://github.com/python/cpython/pull/25099",
+            "https://github.com/sickcodes",
+            "https://github.com/sickcodes/security/blob/master/advisories/SICK-2021-014.md",
+            "https://linux.oracle.com/cve/CVE-2021-29921.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-29921",
+            "https://python-security.readthedocs.io/vuln/ipaddress-ipv4-leading-zeros.html",
+            "https://security.gentoo.org/glsa/202305-02",
+            "https://security.netapp.com/advisory/ntap-20210622-0003/",
+            "https://sick.codes/sick-2021-014",
+            "https://ubuntu.com/security/notices/USN-4973-1",
+            "https://ubuntu.com/security/notices/USN-4973-2",
+            "https://ubuntu.com/security/notices/USN-6891-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-29921",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-05-06T13:15:12.573Z",
+          "LastModifiedDate": "2023-05-03T11:15:10.457Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-29921",
+          "PkgID": "python3.9-minimal@3.9.2-1",
+          "PkgName": "python3.9-minimal",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/python3.9-minimal@3.9.2-1?arch=amd64\u0026distro=debian-11.9",
+            "UID": "919bdf9e5da4a7c3"
+          },
+          "InstalledVersion": "3.9.2-1",
+          "Status": "affected",
+          "Layer": {
+            "DiffID": "sha256:ba84e82e2387e1d5fdb0e8e9aaa947627645e9355c46749b47fd9c47736ae5ba"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-29921",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "python-ipaddress: Improper input validation of octal strings",
+          "Description": "In Python before 3,9,5, the ipaddress library mishandles leading zero characters in the octets of an IP address string. This (in some situations) allows attackers to bypass access control that is based on IP addresses.",
+          "Severity": "CRITICAL",
+          "VendorSeverity": {
+            "alma": 2,
+            "bitnami": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-29921",
+            "https://bugs.python.org/issue36384",
+            "https://docs.python.org/3/library/ipaddress.html",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Misc/NEWS.d/3.8.0a4.rst",
+            "https://github.com/python/cpython/pull/12577",
+            "https://github.com/python/cpython/pull/25099",
+            "https://github.com/sickcodes",
+            "https://github.com/sickcodes/security/blob/master/advisories/SICK-2021-014.md",
+            "https://linux.oracle.com/cve/CVE-2021-29921.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-29921",
+            "https://python-security.readthedocs.io/vuln/ipaddress-ipv4-leading-zeros.html",
+            "https://security.gentoo.org/glsa/202305-02",
+            "https://security.netapp.com/advisory/ntap-20210622-0003/",
+            "https://sick.codes/sick-2021-014",
+            "https://ubuntu.com/security/notices/USN-4973-1",
+            "https://ubuntu.com/security/notices/USN-4973-2",
+            "https://ubuntu.com/security/notices/USN-6891-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-29921",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-05-06T13:15:12.573Z",
+          "LastModifiedDate": "2023-05-03T11:15:10.457Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-45853",
+          "PkgID": "zlib1g@1:1.2.11.dfsg-2+deb11u2",
+          "PkgName": "zlib1g",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/zlib1g@1.2.11.dfsg-2%2Bdeb11u2?arch=amd64\u0026distro=debian-11.9\u0026epoch=1",
+            "UID": "91f1fd973b44ff00"
+          },
+          "InstalledVersion": "1:1.2.11.dfsg-2+deb11u2",
+          "Status": "will_not_fix",
+          "Layer": {
+            "DiffID": "sha256:420179ad2efafbf953a0c75f68a4c9dfaf38a98643df97d415bce49b179895f7"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-45853",
+          "DataSource": {
+            "ID": "debian",
+            "Name": "Debian Security Tracker",
+            "URL": "https://salsa.debian.org/security-tracker-team/security-tracker"
+          },
+          "Title": "zlib: integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_6",
+          "Description": "MiniZip in zlib through 1.3 has an integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_64 via a long filename, comment, or extra field. NOTE: MiniZip is not a supported part of the zlib product. NOTE: pyminizip through 0.2.6 is also vulnerable because it bundles an affected zlib version, and exposes the applicable MiniZip code through its compress API.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "VendorSeverity": {
+            "amazon": 2,
+            "azure": 4,
+            "cbl-mariner": 4,
+            "ghsa": 4,
+            "nvd": 4,
+            "photon": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2023/10/20/9",
+            "http://www.openwall.com/lists/oss-security/2024/01/24/10",
+            "https://access.redhat.com/security/cve/CVE-2023-45853",
+            "https://chromium.googlesource.com/chromium/src/+/d709fb23806858847131027da95ef4c548813356",
+            "https://chromium.googlesource.com/chromium/src/+/de29dd6c7151d3cd37cb4cf0036800ddfb1d8b61",
+            "https://github.com/madler/zlib/blob/ac8f12c97d1afd9bafa9c710f827d40a407d3266/contrib/README.contrib#L1-L4",
+            "https://github.com/madler/zlib/commit/73331a6a0481067628f065ffe87bb1d8f787d10c",
+            "https://github.com/madler/zlib/pull/843",
+            "https://github.com/smihica/pyminizip",
+            "https://github.com/smihica/pyminizip/blob/master/zlib-1.2.11/contrib/minizip/zip.c",
+            "https://lists.debian.org/debian-lts-announce/2023/11/msg00026.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-45853",
+            "https://pypi.org/project/pyminizip/#history",
+            "https://security.gentoo.org/glsa/202401-18",
+            "https://security.netapp.com/advisory/ntap-20231130-0009",
+            "https://security.netapp.com/advisory/ntap-20231130-0009/",
+            "https://www.cve.org/CVERecord?id=CVE-2023-45853",
+            "https://www.winimage.com/zLibDll/minizip.html"
+          ],
+          "PublishedDate": "2023-10-14T02:15:09.323Z",
+          "LastModifiedDate": "2024-08-01T13:44:58.99Z"
+        }
+      ]
+    },
+    {
+      "Target": "Java",
+      "Class": "lang-pkgs",
+      "Type": "jar"
+    },
+    {
+      "Target": "Node.js",
+      "Class": "lang-pkgs",
+      "Type": "node-pkg"
+    },
+    {
+      "Target": "Python",
+      "Class": "lang-pkgs",
+      "Type": "python-pkg"
+    },
+    {
+      "Target": "cube/packages/cubejs-backend-native/Cargo.lock",
+      "Class": "lang-pkgs",
+      "Type": "cargo"
+    },
+    {
+      "Target": "/cube/packages/cubejs-cli/dist/src/command/typegen.js",
+      "Class": "secret"
+    },
+    {
+      "Target": "/cube/packages/cubejs-cli/src/command/typegen.ts",
+      "Class": "secret"
+    }
+  ]
+}

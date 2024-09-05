@@ -38,6 +38,7 @@ export class SQLServer {
     protected readonly apiGateway: ApiGateway,
     options: SQLServerConstructorOptions,
   ) {
+    console.log('SQLServer constructor');
     setupLogger(
       ({ event }) => apiGateway.log(event),
       process.env.CUBEJS_LOG_LEVEL === 'trace' ? 'trace' : 'warn'
@@ -59,6 +60,7 @@ export class SQLServer {
   }
 
   public async execSql(sqlQuery: string, stream: any, securityContext?: any) {
+    console.log('execSql', sqlQuery, stream, securityContext);
     await execSql(this.sqlInterfaceInstance!, sqlQuery, stream, securityContext);
   }
 

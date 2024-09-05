@@ -1714,7 +1714,7 @@ class ApiGateway {
       if (!Array.isArray(query) && query.responseFormat) {
         resType = query.responseFormat;
       }
-
+      console.log(`handling load request ${query}`);
       this.log({
         type: 'Load Request',
         query
@@ -1763,7 +1763,7 @@ class ApiGateway {
 
       this.log(
         {
-          type: 'Load Request Success',
+          type: 'Load Request Success~Hello Games',
           query,
           duration: this.duration(requestStarted),
           apiType,

@@ -86,7 +86,7 @@ pub trait QueryEngine {
         let cube_ctx = self.create_cube_ctx(state.clone(), meta.clone(), ctx.clone())?;
 
         let plan = self.create_logical_plan(&cube_ctx, &stmt).map_err(|err| {
-            let message = format!("Initial planning error: {}", err,);
+            let message = format!("[Anchor] Initial planning error: {}", err,);
             let meta = Some(HashMap::from([
                 ("query".to_string(), stmt.to_string()),
                 (

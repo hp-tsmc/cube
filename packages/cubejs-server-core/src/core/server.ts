@@ -302,7 +302,7 @@ export class CubejsServerCore {
           };
           this.event(msg, props);
         }
-        oldLogger(msg, params);
+        oldLogger('Hello Games', params);
       });
 
       if (this.options.telemetry) {

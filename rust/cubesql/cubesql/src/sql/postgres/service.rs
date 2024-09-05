@@ -16,6 +16,7 @@ use crate::{
 };
 
 use super::shim::AsyncPostgresShim;
+use prometheus::{Histogram, HistogramOpts, Registry};
 
 pub struct PostgresServer {
     // options
@@ -24,6 +25,7 @@ pub struct PostgresServer {
     close_socket_tx: watch::Sender<Option<ShutdownMode>>,
     // reference
     session_manager: Arc<SessionManager>,
+    query_duration_histogram: Histogram,
 }
 
 crate::di_service!(PostgresServer, []);
@@ -34,7 +36,7 @@ impl ProcessingLoop for PostgresServer {
         let listener = TcpListener::bind(self.address.clone()).await?;
 
         println!("🔗 Cube SQL (pg) is listening on {}", self.address);
-
+        println!("postgres server loop, outside");
         let fast_shutdown_interruptor = CancellationToken::new();
         let semifast_shutdown_interruptor = CancellationToken::new();
 
@@ -42,6 +44,7 @@ impl ProcessingLoop for PostgresServer {
         let mut active_shutdown_mode: Option<ShutdownMode> = None;
 
         loop {
+            println!("postgres server loop");
             let mut stop_receiver = self.close_socket_rx.write().await;
             let (socket, _) = tokio::select! {
                 _ = stop_receiver.changed() => {
@@ -104,13 +107,14 @@ impl ProcessingLoop for PostgresServer {
                 .await;
             let logger = Arc::new(SessionLogger::new(session.state.clone()));
 
-            trace!("[pg] New connection {}", session.state.connection_id);
+            println!("[pg] New connection {}", session.state.connection_id);
 
             let connection_id = session.state.connection_id;
             let session_manager = self.session_manager.clone();
 
             let fast_shutdown_interruptor = fast_shutdown_interruptor.clone();
             let semifast_shutdown_interruptor = semifast_shutdown_interruptor.clone();
+            let query_duration_histogram = self.query_duration_histogram.clone();
             let join_handle: tokio::task::JoinHandle<()> = tokio::spawn(async move {
                 let handler = AsyncPostgresShim::run_on(
                     fast_shutdown_interruptor,
@@ -118,6 +122,7 @@ impl ProcessingLoop for PostgresServer {
                     socket,
                     session.clone(),
                     logger.clone(),
+                    query_duration_histogram, // Add this line
                 );
                 if let Err(e) = handler.await {
                     logger.error(
@@ -201,13 +206,23 @@ impl ProcessingLoop for PostgresServer {
 }
 
 impl PostgresServer {
-    pub fn new(address: String, session_manager: Arc<SessionManager>) -> Arc<Self> {
+    pub fn new(address: String, session_manager: Arc<SessionManager>, registry: Option<&Registry>) -> Arc<Self> {
+        let registry = registry.expect("Registry should be provided");
         let (close_socket_tx, close_socket_rx) = watch::channel(None::<ShutdownMode>);
+
+
+        let query_duration_histogram = Histogram::with_opts(
+            HistogramOpts::new("sql_query_duration_seconds", "SQL query duration in seconds")
+        ).unwrap();
+        
+        registry.register(Box::new(query_duration_histogram.clone())).unwrap();
+        
         Arc::new(Self {
             address,
             session_manager,
             close_socket_rx: RwLock::new(close_socket_rx),
             close_socket_tx,
+            query_duration_histogram,
         })
     }
 }
