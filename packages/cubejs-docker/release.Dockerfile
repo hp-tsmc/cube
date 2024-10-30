@@ -177,7 +177,7 @@ ENV CUBEJS_DOCKER_IMAGE_TAG=latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends rxvt-unicode libssl3 ca-certificates python3 libpython3-dev \
+    && apt-get install -y --no-install-recommends rxvt-unicode libssl3 ca-certificates python3 libpython3-dev pip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN yarn policies set-version v1.22.19
@@ -203,7 +203,7 @@ RUN ln -s  /cubejs/rust/cubestore/bin/cubestore-dev /usr/local/bin/cubestore-dev
 # End: Copy from latest.Dockerfile
 # install extension 
 ADD packages/cubejs-docker/duckdb_extension/httpfs.duckdb_extension /root/.duckdb/extensions/v1.0.0/linux_amd64/httpfs.duckdb_extension
-ENV DEV_BUILD_TAG=2024-09-05_13-33-51
+ENV DEV_BUILD_TAG=2024-09-11_00-22-14
 COPY packages/cubejs-backend-native /cube/node_modules/@cubejs-backend/native
 
 WORKDIR /cube/conf
@@ -211,3 +211,7 @@ WORKDIR /cube/conf
 EXPOSE 4000
 
 CMD ["cubejs", "server"]
+
+ADD packages/cubejs-docker/requirements.txt .
+RUN pip3 install -r requirements.txt --break-system-packages
+

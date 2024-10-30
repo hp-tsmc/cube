@@ -13,6 +13,10 @@ all: build
 build:
 	docker build --no-cache -t $(IMAGE_NAME):$(DATE_TAG) --progress=plain --build-arg IMAGE_VERSION=${IMAGE_VERSION} -f packages/cubejs-docker/release.Dockerfile . 2>&1 | tee build.log
 
+dev-tag:
+	docker tag $(IMAGE_NAME):dev $(IMAGE_NAME):$(DATE_TAG)
+	docker push $(IMAGE_NAME):$(DATE_TAG)
+
 # Build the Docker image with a fixed tag for development
 dev:
 	# Update DEV_BUILD_TAG with current timestamp

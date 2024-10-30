@@ -127,7 +127,7 @@ const schemaOptions = Joi.object().keys({
           idleTimeoutMillis: Joi.number().min(0),
         })
       }),
-      continueWaitTimeout: Joi.number().min(0).max(90).integer(),
+      continueWaitTimeout: Joi.number().min(0).max(900).integer(),
       skipExternalCacheAndQueue: Joi.boolean(),
       queryCacheOptions: Joi.object().keys({
         refreshKeyRenewalThreshold: Joi.number().min(0).integer(),

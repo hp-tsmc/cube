@@ -257,8 +257,6 @@ impl AsyncPostgresShim {
             session,
             logger,
         };
-        // Measure query duration
-        let start_time = Instant::now();
         let run_result = tokio::select! {
             _ = fast_shutdown_interruptor.cancelled() => {
                 Self::flush_and_write_admin_shutdown_fatal_message(&mut shim).await?;
@@ -267,10 +265,7 @@ impl AsyncPostgresShim {
             }
             res = shim.run(query_duration_histogram.clone()) => res,
         };
-        // Measure query duration
-        let duration = start_time.elapsed();
-        query_duration_histogram.observe(duration.as_secs_f64());
-        let message = format!("[run_on] Query duration: {:?}", duration);
+        let message = format!("[run_on] run_on finished");
         println!("{}", message);
 
         match run_result {
@@ -364,11 +359,13 @@ impl AsyncPostgresShim {
                 }
                 message_result = buffer::read_message(&mut self.socket) => message_result?
             };
+            let mut query_log = String::from("message");
             // Measure query duration
             let start_time = Instant::now();
             let result = match message {
                 protocol::FrontendMessage::Query(body) => {
                     let span_id = Self::new_span_id(body.query.clone());
+                    query_log = body.query.clone();
                     let mut qtrace = Qtrace::new(&body.query);
                     if let Some(qtrace) = &qtrace {
                         debug!("Assigned query UUID: {}", qtrace.uuid())
@@ -518,7 +515,7 @@ impl AsyncPostgresShim {
             let duration = start_time.elapsed();
 
             // Log the query duration
-            println!("[run] after handle message: {:?}", duration);
+            println!("[run] Query: {:?}, duration: {:?}", query_log, duration);
             query_duration_histogram.observe(duration.as_secs_f64());
 
             if let Err(err) = result {
