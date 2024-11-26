@@ -9,7 +9,7 @@ ENV CI=0
 RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get install -y --no-install-recommends libssl3 curl \
-       cmake python3.11 libpython3.11-dev gcc g++ make cmake openjdk-17-jdk-headless \
+       cmake pip python3.11 libpython3.11-dev gcc g++ make cmake openjdk-17-jdk-headless \
     && rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup
@@ -193,7 +193,7 @@ RUN ln -s  packages/cubejs-docker/bin/cubestore-dev /usr/local/bin/cubestore-dev
 # End: Copy from latest.Dockerfile
 # install extension 
 ADD packages/cubejs-docker/duckdb_extension/httpfs.duckdb_extension_v1_1_1 /root/.duckdb/extensions/v1.1.1/linux_amd64/httpfs.duckdb_extension
-ENV DEV_BUILD_TAG=2024-11-25_00-38-42
+ENV DEV_BUILD_TAG=2024-11-26_11-13-03
 COPY packages/cubejs-backend-native /cube/node_modules/@cubejs-backend/native
 
 WORKDIR /cube/conf
@@ -203,5 +203,5 @@ EXPOSE 4000
 CMD ["cubejs", "server"]
 
 ADD packages/cubejs-docker/requirements.txt .
-RUN pip3 install -r requirements.txt --break-system-packages
+RUN pip install -r requirements.txt --break-system-packages
 
