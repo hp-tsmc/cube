@@ -188,8 +188,8 @@ ENV PYTHONUNBUFFERED=1
 
 
 # We need to test this build path & bin path first
-COPY packages/cubejs-docker/bin/cubejs-dev /usr/local/bin/cubejs
-RUN ln -s  packages/cubejs-docker/bin/cubestore-dev /usr/local/bin/cubestore-dev
+COPY packages/cubejs-docker/bin-release/cubejs /usr/local/bin/cubejs
+RUN ln -s  packages/cubejs-docker/bin-release/cubestore /usr/local/bin/cubestore
 # End: Copy from latest.Dockerfile
 # install extension 
 ADD packages/cubejs-docker/duckdb_extension/httpfs.duckdb_extension_v1_1_1 /root/.duckdb/extensions/v1.1.1/linux_amd64/httpfs.duckdb_extension
