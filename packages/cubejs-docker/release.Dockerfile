@@ -175,7 +175,7 @@ RUN apt-get update \
     && apt-get install -y ca-certificates python3.11 libpython3.11-dev \
     && apt-get clean
 
-WORKDIR /cubejs
+WORKDIR /cube
 
 COPY --from=build /cubejs .
 COPY --from=prod_dependencies /cubejs .
@@ -193,7 +193,7 @@ RUN ln -s  packages/cubejs-docker/bin/cubestore-dev /usr/local/bin/cubestore-dev
 # End: Copy from latest.Dockerfile
 # install extension 
 ADD packages/cubejs-docker/duckdb_extension/httpfs.duckdb_extension_v1_1_1 /root/.duckdb/extensions/v1.1.1/linux_amd64/httpfs.duckdb_extension
-ENV DEV_BUILD_TAG=2024-11-26_11-13-03
+ENV DEV_BUILD_TAG=2024-11-27_11-00-56
 COPY packages/cubejs-backend-native /cube/node_modules/@cubejs-backend/native
 
 WORKDIR /cube/conf

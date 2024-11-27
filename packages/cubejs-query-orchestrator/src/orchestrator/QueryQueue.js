@@ -209,6 +209,10 @@ export class QueryQueue {
         requestId: options.requestId,
         addedToQueueTime: new Date().getTime(),
       };
+      this.logger('ExecuteInQueue when skipQueue is true', {
+        queryDef: queryDef,
+        options: options,
+      });
       this.logger('Waiting for query', {
         queueId: options.queueId,
         spanId: options.spanId,
@@ -483,6 +487,10 @@ export class QueryQueue {
               status: []
             };
           }
+          this.logger('GetQueue query', {
+            query: query,
+            status: status
+          }); 
 
           obj[query.queryKey].status.push(status);
         });

@@ -30,7 +30,11 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "core-js": "^3.34.0",
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "parse-url": "^8.1.0",
+    "loader-utils": "^2.0.3",
+    "lodash": "^4.17.12",
+    "mysql2": "^3.9.7"
   },
   "files": [
     "src",
