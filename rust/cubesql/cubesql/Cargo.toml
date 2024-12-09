@@ -59,6 +59,8 @@ lru = "0.12.1"
 sha2 = "0.10.8"
 bigdecimal = "0.4.2"
 indexmap = "1.9.3"
+prometheus = "0.13"
+hyper = { version = "0.14", features = ["server", "http1"] }
 
 
 [dev-dependencies]

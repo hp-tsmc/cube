@@ -26,6 +26,8 @@ use std::sync::Arc;
 
 use crate::sql::compiler_cache::{CompilerCache, CompilerCacheImpl};
 use tokio::{sync::RwLock, task::JoinHandle};
+// import prometheus for config initialization
+use prometheus::Registry;
 
 pub struct CubeServices {
     pub injector: Arc<Injector>,
@@ -83,6 +85,7 @@ impl CubeServices {
 pub struct Config {
     config_obj: Arc<ConfigObjImpl>,
     injector: Arc<Injector>,
+    registry: Option<Registry>,
 }
 
 pub trait ConfigObj: DIService + Debug {
@@ -253,7 +256,14 @@ impl Config {
         Config {
             injector: Injector::new(),
             config_obj: Arc::new(ConfigObjImpl::default()),
+            registry: None, // Initialize with None
         }
+    }
+
+    // Add this method to set the registry
+    pub fn with_registry(mut self, registry: Registry) -> Self {
+        self.registry = Some(registry);
+        self
     }
 
     pub fn test() -> Config {
@@ -291,6 +301,7 @@ impl Config {
         Self {
             injector: self.injector.clone(),
             config_obj: Arc::new(update_config(new_config)),
+            registry: self.registry.clone(),
         }
     }
 
@@ -357,12 +368,15 @@ impl Config {
             .await;
 
         if self.config_obj.postgres_bind_address().is_some() {
+            println!("configure_injector");
+            let registry_clone = self.registry.clone();
             self.injector
                 .register_typed::<PostgresServer, _, _, _>(|i| async move {
                     let config = i.get_service_typed::<dyn ConfigObj>().await;
                     PostgresServer::new(
                         config.postgres_bind_address().as_ref().unwrap().to_string(),
                         i.get_service_typed().await,
+                        registry_clone.as_ref(),
                     )
                 })
                 .await;
@@ -370,6 +384,7 @@ impl Config {
     }
 
     pub async fn cube_services(&self) -> CubeServices {
+        println!("cube_services");
         CubeServices {
             injector: self.injector.clone(),
             processing_loop_handles: RwLock::new(Vec::new()),
@@ -377,6 +392,7 @@ impl Config {
     }
 
     pub async fn configure(&self) {
+        println!("configure");
         if let Some(timezone) = &self.config_obj.timezone {
             env::set_var("TZ", timezone.as_str());
         }

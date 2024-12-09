@@ -54,6 +54,7 @@ impl Injector {
         F: Future<Output = Arc<T>> + Send,
         T: DIService + 'static,
     {
+        println!("register_typed in injection.rs");
         let name = type_name::<I>().to_string();
         self.factories.write().await.insert(
             name.to_string(),
