@@ -488,10 +488,11 @@ export class QueryCache {
           (client, req) => {
             this.logger('Executing SQL', { ...req });
             this.logger('GetQueue client ', {
-              client_type: typeof client,
+              client_type: client.constructor.name,
               req: req
             });
             if (req.useCsvQuery) {
+              this.logger('GetQueue useCsvQuery');
               return this.csvQuery(client, req);
             } else {
               return client.query(req.query, req.values, req);
@@ -561,8 +562,8 @@ export class QueryCache {
           this.logger('Executing SQL', {
             ...q
           });
-          this.logger('GetQueue client ', {
-            client_type: typeof client,
+          this.logger('GetExternalQueue client ', {
+            client_type: client.constructor.name,
             req: q
           });
           return client.query(q.query, q.values, q);

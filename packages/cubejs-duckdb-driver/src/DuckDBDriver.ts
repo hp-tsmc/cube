@@ -219,8 +219,17 @@ export class DuckDBDriver extends BaseDriver implements DriverInterface {
   public async query<R = unknown>(query: string, values: unknown[] = [], _options?: QueryOptions): Promise<R[]> {
     const { defaultConnection } = await this.getInitiatedState();
     const fetchAsync: (sql: string, ...params: any[]) => Promise<R[]> = promisify(defaultConnection.all).bind(defaultConnection) as any;
+    
+    console.log('duckdb query run')
+    if (this.logger) {
+      this.logger('start duckdb query', {timeAt: new Date().getTime()})
+    }
 
     const result = await fetchAsync(query, ...values);
+    if (this.logger) {
+      this.logger('finish fetchAsync', {timeAt: new Date().getTime()})
+    }
+
     return result.map((item) => {
       transformRow(item);
 

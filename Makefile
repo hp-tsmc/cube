@@ -1,8 +1,8 @@
 # Get the current date and time precise to the second
-DATE_TAG := $(shell date +%Y-%m-%d_%H-%M-%S)
+DATE_TAG := $(shell date +%Y%m%d%H%M%S)
 
 # Docker image name
-IMAGE_NAME := hpdevelop/cubejs
+IMAGE_NAME := yautz/cube
 
 IMAGE_VERSION := 0.1
 

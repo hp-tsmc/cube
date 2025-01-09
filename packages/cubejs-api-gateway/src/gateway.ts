@@ -1518,8 +1518,11 @@ class ApiGateway {
       context,
       persistent: false,
     }];
+    this.log({type: 'Normal Total', total: normalizedQuery.total}, context);
+
     if (normalizedQuery.total) {
       const normalizedTotal = structuredClone(normalizedQuery);
+      this.log({type: 'Normal Query Count', normalizedTotal}, context);
       normalizedTotal.totalQuery = true;
 
       delete normalizedTotal.order;
@@ -1582,6 +1585,24 @@ class ApiGateway {
     response: any,
     responseType?: ResultType,
   ) {
+    this.log({type: 'responseType', responseType}, context);
+    this.log({
+      type: 'Transform Result',
+      query: normalizedQuery,
+      lastRefreshTime: response.lastRefreshTime?.toISOString(),
+      refreshKeyValues: response.refreshKeyValues,
+      usedPreAggregations: response.usedPreAggregations,
+      transformedQuery: sqlQuery.canUseTransformedQuery,
+      requestId: context.requestId,
+      annotation,
+      dataSource: response.dataSource,
+      dbType: response.dbType,
+      extDbType: response.extDbType,
+      external: response.external,
+      slowQuery: Boolean(response.slowQuery),
+      total: normalizedQuery.total ? response.total : null
+    }, context);
+
     return {
       query: normalizedQuery,
       data: transformData(
@@ -1691,6 +1712,8 @@ class ApiGateway {
         resType = query.responseFormat;
       }
 
+      this.log({type: 'resType', resType}, context);
+
       this.log({
         type: 'Load Request',
         query
@@ -1704,16 +1727,25 @@ class ApiGateway {
         requestId: context.requestId
       });
 
+      this.log({type: 'normalizedQueries', normalizedQueries}, context);
+
       metaConfigResult = this.filterVisibleItemsInMeta(context, metaConfigResult);
+
+      this.log({type: 'metaConfigResult', metaConfigResult}, context);
 
       const sqlQueries = await this.getSqlQueriesInternal(context, normalizedQueries);
 
+      this.log({type: 'sqlQueries', sqlQueries}, context);
+
       let slowQuery = false;
 
+      this.log({type: 'Start to get result'}, context);
       const results = await Promise.all(
         normalizedQueries.map(async (normalizedQuery, index) => {
           slowQuery = slowQuery ||
             Boolean(sqlQueries[index].slowQuery);
+
+          this.log({type: 'Prepare annotation'}, context);
 
           const annotation = prepareAnnotation(
             metaConfigResult, normalizedQuery
@@ -1724,6 +1756,8 @@ class ApiGateway {
             normalizedQuery,
             sqlQueries[index],
           );
+
+          this.log({type: 'Query Response', response}, context);
 
           return this.getResultInternal(
             context,
@@ -1736,6 +1770,8 @@ class ApiGateway {
           );
         })
       );
+
+      this.log({type: 'Query Result', results}, context);
 
       this.log(
         {
