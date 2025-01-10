@@ -3,6 +3,7 @@ DATE_TAG := $(shell date +%Y%m%d%H%M%S)
 
 # Docker image name
 IMAGE_NAME := yautz/cube
+STORE_IMAGE_NAME := yautz/cube_store
 
 IMAGE_VERSION := 0.1
 
@@ -12,6 +13,9 @@ all: build
 # Build the Docker image with the current date tag
 build:
 	docker build --no-cache -t $(IMAGE_NAME):$(DATE_TAG) --progress=plain --build-arg IMAGE_VERSION=${IMAGE_VERSION} -f packages/cubejs-docker/release.Dockerfile . 2>&1 | tee build.log
+
+store-build:
+	docker build --no-cache -t $(STORE_IMAGE_NAME):$(DATE_TAG) --progress=plain --build-arg IMAGE_VERSION=${IMAGE_VERSION} -f rust/cubestore/Dockerfile ./rust/cubestore 2>&1 | tee store_build.log
 
 dev-tag:
 	docker tag $(IMAGE_NAME):dev $(IMAGE_NAME):$(DATE_TAG)
