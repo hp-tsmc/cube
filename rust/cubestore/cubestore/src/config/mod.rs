@@ -1195,7 +1195,7 @@ impl Config {
         let transport_max_message_size = env_parse_size(
             "CUBESTORE_TRANSPORT_MAX_MESSAGE_SIZE",
             64 << 20,
-            Some(256 << 20),
+            Some(1024 << 20),
             Some(16 << 20),
         );
 

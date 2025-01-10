@@ -135,7 +135,7 @@ impl SqlResultCache {
 
         if let Some(result) = self.result_cache.get(&result_key) {
             app_metrics::DATA_QUERIES_CACHE_HIT.increment();
-            trace!("Using result cache for '{}'", query);
+            trace!("Using result cache for '{}', result is empty = {}", query, result.is_empty());
             return Ok(result);
         }
 
