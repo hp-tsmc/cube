@@ -230,76 +230,66 @@ function getVanilaRow(
   dbRow: { [sqlAlias: string]: DBResponseValue },
 ): { [member: string]: DBResponsePrimitive } {
   console.log("Start to getVanilaRow");
+
   const row = R.pipe(
     R.toPairs,
-    R.map(p => {
-      const memberName = aliasToMemberNameMap[p[0]];
+    R.map((alias, value) => {
+      console.log("Mapping member & alias");
+      const memberName = aliasToMemberNameMap[alias];
       const annotationForMember = annotation[memberName];
+
       if (!annotationForMember) {
         throw new UserError(
-          `You requested hidden member: '${
-            p[0]
-          }'. Please make it visible using \`shown: true\`. ` +
-          'Please note primaryKey fields are `shown: false` by ' +
-          'default: https://cube.dev/docs/schema/reference/joins#' +
-          'setting-a-primary-key.'
+          `You requested hidden member: '${alias}'. Please make it visible using \`shown: true\`. ` +
+          'PrimaryKey fields are `shown: false` by default' +
+          'https://cube.dev/docs/schema/reference/joins#setting-a-primary-key.'
         );
       }
-      console.log("transformResult");
 
-      const transformResult = [
-        memberName,
-        transformValue(
-          p[1] as DBResponseValue,
-          annotationForMember.type
-        )
-      ];
-      const path = memberName.split(MEMBER_SEPARATOR);
-
-      /**
-       * Time dimensions without granularity.
-       * @deprecated
-       * @todo backward compatibility for referencing
-       */
-      console.log("memberNameWithoutGranularity");
-      const memberNameWithoutGranularity =
-        [path[0], path[1]].join(MEMBER_SEPARATOR);
-      if (
-        path.length === 3 &&
-        (query.dimensions || [])
-          .indexOf(memberNameWithoutGranularity) === -1
-      ) {
-        return [
-          transformResult,
-          [
-            memberNameWithoutGranularity,
-            transformResult[1]
-          ]
-        ];
-      }
-
-      return [transformResult];
+      const transformedValue = transformValue(value, annotationForMember.type);
+      const memberPath = memberName.split(MEMBER_SEPARATOR);
+      const memberNameWithoutGranularity = memberPath.slice(0, 2).join(MEMBER_SEPARATOR);
+      const isTimeDimensionWithoutGranularity = 
+        memberPath.length === 3 &&
+        !query.dimensions?.includes(memberNameWithoutGranularity);
+      
+        if (isTimeDimensionWithoutGranularity) {
+          console.log('No Granularity');
+          return [
+            [memberName, transformedValue],
+            [memberNameWithoutGranularity, transformedValue]
+          ];
+        }
+      
+        return [[memberName, transformedValue]];
     }),
     // @ts-ignore
     R.unnest,
     R.fromPairs
   // @ts-ignore
   )(dbRow);
+
   console.log("getDateRangeValue");
+
   if (queryType === QueryTypeEnum.COMPARE_DATE_RANGE_QUERY) {
+    console.log('QueryTypeEnum.COMPARE_DATE_RANGE_QUERY');
     return {
       ...row,
       compareDateRange: getDateRangeValue(query.timeDimensions)
     };
-  } else if (queryType === QueryTypeEnum.BLENDING_QUERY) {
+  } 
+
+  if (queryType === QueryTypeEnum.BLENDING_QUERY) {
+    console.log("QueryTypeEnum.BLENDING_QUERY");
+    const blendingKey = getBlendingQueryKey(query.timeDimensions);
+    const blendingResponseKey = getBlendingResponseKey(query.timeDimensions);
     return {
       ...row,
-      [getBlendingQueryKey(query.timeDimensions)]:
-        row[getBlendingResponseKey(query.timeDimensions)]
+      [blendingKey]: row[blendingResponseKey]
     };
   }
   console.log("End getVanilaRow");
-  return row as { [member: string]: DBResponsePrimitive; };
+  return row as { [member: string]: DBResponsePrimitive };
 }
 
 /**
