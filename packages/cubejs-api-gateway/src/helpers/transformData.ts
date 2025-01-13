@@ -233,6 +233,7 @@ function getVanilaRow(
 
   const row = R.pipe(
     R.toPairs,
+    // @ts-ignore
     R.map((alias, value) => {
       console.log("Mapping member & alias");
       const memberName = aliasToMemberNameMap[alias];
