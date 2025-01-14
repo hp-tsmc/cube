@@ -1512,8 +1512,8 @@ impl Config {
                 transport_max_frame_size: env_parse_size(
                     "CUBESTORE_TRANSPORT_MAX_FRAME_SIZE",
                     64 << 20,
-                    Some(256 << 20),
-                    Some(4 << 20),
+                    None,
+                    None,
                 ),
                 local_files_cleanup_interval_secs: env_parse(
                     "CUBESTORE_LOCAL_FILES_CLEANUP_INTERVAL_SECS",

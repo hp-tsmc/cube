@@ -142,15 +142,19 @@ impl HttpServer {
                         tokio::select! {
                             Some(res) = response_rx.recv() => {
                                 let msg = res.bytes();
-                                trace!(
-                                    "Sending web socket response: res size = {}, max message size = {}",
-                                    msg.len(),
-                                    max_message_size
-                                );
-                                let send_res = web_socket.send(Message::binary(res.bytes())).await;
-                                if let Err(e) = send_res {
-                                    error!("Websocket message send error: {:?}", e)
+                                trace!("Sending web socket response: res size = {}, max message size = {}", msg.len(), max_message_size);
+                                
+                                let mut retries = 3;
+                                while retries > 0 {
+                                    let send_res = web_socket.send(Message::binary(res.bytes())).await;
+                                    if let Err(e) = send_res {
+                                        retries -= 1;
+                                        error!("Websocket message send error: {:?}", e);
+                                    } else {
+                                        break;
+                                    }
                                 }
+                                
                                 if res.should_close_connection() {
                                    log::warn!("Websocket connection closed");
                                    break;
